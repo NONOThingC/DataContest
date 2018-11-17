@@ -1,2 +1,3 @@
 # DataContest
-For my data contest
+For my data contest.
+Try to do some contest or small project.
