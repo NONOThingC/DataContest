@@ -496,6 +496,15 @@ print("Average 5-Fold CV Score: {}".format(np.mean(cv_scores)))
 
 #岭回归
 
+#Pipeline
+"""from sklearn.ensemble import RandomForestRegressor
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import Imputer
+
+my_pipeline = make_pipeline(Imputer(), RandomForestRegressor())
+my_pipeline.fit(train_X, train_y)
+predictions = my_pipeline.predict(test_X)
+"""
 
 #效果验证
 

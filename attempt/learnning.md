@@ -38,3 +38,16 @@ Jupyter可以用一个数据的平均值这样的aggregate function去填补其�
 * learning_rate不多BB，其实就是梯度下降的步长值（类似，这样说其实不准确）
 a small learning rate (and large number of estimators) will yield more accurate XGBoost models, though it will also take the model longer to train since it does more iterations through the cycle
 * n_jobs并行任务数，好吧，并不清楚内部原理。后面再说。
+
+# Pipeline
+sklearn中的黑箱子并行，
+my_pipeline = make_pipeline(Imputer(), RandomForestRegressor())
+格式大致如此
+
+# Data Leakage（非常重要的问题）
+leakage causes a model to look accurate until you start making decisions with the model, and then the model becomes very inaccurate.
+* Leaky Predictors
+  你的数据在预测时不再可用。一般发生是在你要预测的项发生在自变量的项之前，也就是说你要预测的项已经测量完了，然后才得到自变量，这样会造成因果混乱，而且这个自变量对要预测量毫无作用，因此这样的量应该删去。
+  ![tu](https://i.imgur.com/CN4INKb.png)
+* Leaky Validation Strategy
+  一般发生在你把测试集也预处理和fit了，把测试集也拿去做交叠划分验证了，这样测试准确性就会很高，但是模型的鲁棒性却很差。、
