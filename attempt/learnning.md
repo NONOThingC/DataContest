@@ -76,3 +76,46 @@ total number of trained examples=steps*batch isze
 我们最终获得的预测能力将远远超过任一特征单独的预测能力。
 
 例如，如果狗狗在下午 5 点主人下班回来时（快乐地）叫喊，可能表示对主人满意度的正面预测结果。如果狗狗在凌晨 3 点主人熟睡时（也许痛苦地）哀叫，可能表示对主人满意度的强烈负面预测结果。
+
+# L1 和 L2 正则化。
+不再多BB，其实两种在feature selection中都有应用。L2其实也可以通过给权重设定阈值的方式来进行筛选。
+
+L2 和 L1 采用不同的方式降低权重：
+
+L2 会降低权重^2。
+L1 会降低 |权重|。
+因此，L2 和 L1 具有不同的导数：
+
+L2 的导数为 2 * 权重。
+L1 的导数为 k（一个常数，其值与权重无关）。
+您可以将 L2 的导数的作用理解为每次移除权重的 x%。对于任意数字，即使按每次减去 x% 的幅度执行数十亿次减法计算，最后得出的值也绝不会正好为 0。
+
+可以将 L1 的导数的作用理解为每次从权重中减去一个常数。不过，由于减去的是绝对值，L1 在 0 处具有不连续性，这会导致与 0 相交的减法结果变为 0。例如，如果减法使权重从 +0.1 变为 -0.2，L1 便会将权重设为 0。就这样，L1 使权重变为 0 了。
+
+L1 正则化 - 减少所有权重的绝对值 - 证明对宽度模型非常有效。
+
+请注意，该说明适用于一维模型。
+
+# 神经网络
+## [神经网络与拟合关系的理解](https://colah.github.io/posts/2014-03-NN-Manifolds-Topology/)(从拓扑学的角度)
+1. 神经网络每一层其实是对每个维度的旋转、扭曲变换。Each layer stretches and squishes space, but it never cuts, breaks, or folds it。Intuitively, we can see that it preserves topological properties.Transformations like this, which don’t affect topology, are called homeomorphisms.
+<br>定理如下：如果权重矩阵W是非奇异的，那么有N个输入N个输出的层是同胚的 Layers with N inputs and N outputs are homeomorphisms, if the weight matrix, W, is non-singular.
+<br>定义域上连续，反函数定义域上连续，是双射的函数是同胚的。
+理解了这些就可以思考为什么以下的A,B不能只用二层或者以下层数的神经网络进行分类。
+![classfication](https://colah.github.io/posts/2014-03-NN-Manifolds-Topology/img/topology_base.png)
+因为你在这两维之中无论怎么拉伸他都没有一条直线穿过。，如下图。
+![answer](https://colah.github.io/posts/2014-03-NN-Manifolds-Topology/img/topology_2D-2D_train.gif)
+
+2. If a neural network using layers with only 3 units can classify it, then it is an unlink(a bunch of things that are tangled together, but can be separated by continuous deformation).
+unlink就是说可以被有限步破坏而导致不连接。
+<br>In topology, we would call it an ambient isotopy between the original link and the separated ones.
+原始目标和分开的目标之间的关系叫做ambient isotopy环境同位素。
+<br>Theorem: There is an ambient isotopy between the input and a network layer’s representation if: a) W isn’t singular, b) we are willing to permute the neurons in the hidden layer, and c) there is more than 1 hidden unit.
+这个定理告诉了我们什么样的输入是这样的网络可以解的。
+<br>Links and knots are 1-dimensional manifolds, but we need 4 dimensions to be able to untangle all of them. Similarly, one can need yet higher dimensional space to be able to unknot n-dimensional manifolds. All n-dimensional manifolds can be untangled in 2n+2 dimensions
+所以n维的unlink至少需要2n+2维才能解开。
+
+3. 文章作者提议其实可以尝试在合理的地方用KNN，因为KNN其实意义比较明确，因此这样的方式可以更好的理解网络。但是，Sadly, even with sophisticated architecture, using k-NN only gets down to 5-4% test error – and using simpler architectures gets worse results. 
+
+4. 神经网络做的自然事情，非常简单的路线，是试图将两个类分开，并尽可能地拉伸缠绕的部分。虽然这不会接近真正的解决方案，但它可以实现相对较高的分类准确度并且是诱人的局部最小值。
+<br>它会在它试图拉伸的区域和近乎不连续的区域中表现为非常高的偏差。我们知道这些事情会发生，于是用正则化，惩罚项来应对这个问题。
