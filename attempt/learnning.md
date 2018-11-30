@@ -55,10 +55,10 @@ leakage causes a model to look accurate until you start making decisions with th
 # 重要概念
 1. RMSE 的一个很好的特性是，它可以在与原目标相同的规模下解读。一般可以比较 RMSE 与目标最大值和最小值的差值的大小。
 2. steps：训练迭代的总次数。一步计算一批样本产生的损失，然后使用该值修改一次模型的权重。
-batch size：单步的样本数量（随机选择）。例如，SGD 的批次大小为 1。
+batch size：单步的样本数量（随机选择）。
 以下公式成立：
 total number of trained examples=steps*batch isze
-3. 准确率Accuary:所有东西中分类对了的概率。
+1. 准确率Accuary:所有东西中分类对了的概率。
    精确率Precision：认为是对的中真正对的概率。
    recall：真的是正类的情况中分类（认为）对的概率。
 
