@@ -1,0 +1,1 @@
+It is not convenient to set up a new git rep.So I just store here.If necessary,I would transplant this to a new rep.
