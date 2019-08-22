@@ -20,3 +20,6 @@ This is my first attempt for data contest.
 - item_name - name of item
 - shop_name - name of shop
 - item_category_name - name of item category
+
+## My consideration
+The task is to forecast the total amount of products sold in every shop.Note that the list of shops and products slightly changes every month.
